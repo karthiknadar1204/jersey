@@ -80,3 +80,31 @@ code {
   font-size: 2rem;
   cursor: pointer;
 }
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card img {
+  display: block;
+}
+
+.product_image{
+  width: 30rem;
+  height: 30rem;
+  border:1px solid black;
+  margin-left: 25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.product_name{
+  font-size: 2rem;
+  font-weight: bold;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 30rem;
+  margin-bottom: -3rem;
+}
+
