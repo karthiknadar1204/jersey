@@ -11,7 +11,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #EDF2F4;
+  background-color: #e9ecef;
 }
 
 code {
@@ -73,5 +73,10 @@ code {
 }
 
 .footer{
-  bottom: 0;
+  /* margin-bottom: 4rem; */
+}
+
+.socials{
+  font-size: 2rem;
+  cursor: pointer;
 }
