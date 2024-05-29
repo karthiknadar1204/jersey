@@ -25,7 +25,7 @@ const Navbar = () => {
               <li className="hidden sm:inline">Home</li>
             </NavLink>
             <NavLink
-              to="/about"
+              to="/all"
               className={({ isActive }) =>
                 isActive
                   ? "text-red-700 hover:text-red-700"
@@ -35,7 +35,7 @@ const Navbar = () => {
               <li className="hidden sm:inline">All Products</li>
             </NavLink>
             <NavLink
-              to="/profile"
+              to="/contact"
               className={({ isActive }) =>
                 isActive
                   ? "text-red-700 hover:text-red-700"

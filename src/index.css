@@ -61,3 +61,17 @@ code {
   color: white;
 }
 
+
+.footer_links{
+  gap: 5rem;
+}
+
+.home_image{
+  height: 40rem;
+  width: 40rem;
+  margin-top: -5rem;
+}
+
+.footer{
+  bottom: 0;
+}

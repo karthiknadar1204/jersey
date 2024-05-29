@@ -20,7 +20,7 @@ const Hero = () => {
 
 
         <div className="right-img flex justify-end mr-24">
-            <img src={img} alt="" className='max-h-1/2 max-w-3/12' />
+            <img src={img} alt="" className=' home_image' />
         </div>
     </div>
   )
