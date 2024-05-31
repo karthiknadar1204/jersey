@@ -1,11 +1,22 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-import img from "../assets/logo.png"
+import { NavLink,useNavigate } from "react-router-dom";
+import img from "../assets/logo.png";
+import { useContext } from "react";
+import { CartContext } from "../CartContext";
+// import CartProduct from './CartProduct';
 
 const Navbar = () => {
+
+  const navigate = useNavigate();
+  const cart = useContext(CartContext);
+
+  const handleCartClick = () => {
+    navigate('/cart');
+  };
+
   return (
     <header>
-      <div className="flex justify-between max-w-6xl mx-auto py-7 px-8">
+      <div className="flex justify-between max-w-6xl mx-auto py-7">
         <div className="logo flex justify-start">
           <NavLink to="/">
             <img src={img} alt="logo" className="max-h-28" />
@@ -45,6 +56,10 @@ const Navbar = () => {
               <li>Contact</li>
             </NavLink>
           </ul>
+        {/* <button className="cart" onClick={handleCartClick} >cart</button> */}
+        <button className="cart" onClick={handleCartClick}>
+            Cart ({cart.items.length}) {/* Display total items in cart */}
+          </button>
         </div>
       </div>
     </header>

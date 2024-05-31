@@ -6,9 +6,12 @@ import AllProducts from './pages/AllProducts';
 import Home from './pages/Home';
 import ProductInfo from './pages/ProductInfo';
 import Contact from './pages/Contact';
+import CartPage from './components/CartPage';
+import CartProvider from './CartContext';
 
 const App = () => {
   return (
+    <CartProvider>
     <Router>
       <div className="flex flex-col min-h-screen"> {/* Ensure the flex container takes at least the full height of the viewport */}
         <Navbar />
@@ -18,11 +21,13 @@ const App = () => {
             <Route path='/all' element={<AllProducts />} />
             <Route path='/product/:id' element={<ProductInfo/>} />
             <Route path='/contact' element={<Contact/>} />
+            <Route path='/cart' element={<CartPage/>} />
           </Routes>
         </main>
         <Footer />
       </div>
     </Router>
+    </CartProvider>
   );
 }
 

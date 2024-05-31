@@ -1,10 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { CartContext } from '../CartContext';
 
-const IncrementDecrement = () => {
-  const [count, setCount] = useState(1);
+const IncrementDecrement = ({ productId }) => {
+  const { getProductQuantity, addOneToCart, removeOneFromCart } = useContext(CartContext);
+  const [count, setCount] = useState(getProductQuantity(productId));
 
-  const increment = () => setCount(count + 1);
-  const decrement = () => setCount(count > 1 ? count - 1 : 1);
+  useEffect(() => {
+    setCount(getProductQuantity(productId));
+  }, [getProductQuantity, productId]);
+
+  const increment = () => {
+    addOneToCart(productId);
+    setCount(count + 1);
+  };
+
+  const decrement = () => {
+    if (count > 1) {
+      removeOneFromCart(productId);
+      setCount(count - 1);
+    }
+  };
 
   return (
     <div className="increment_decrement">
