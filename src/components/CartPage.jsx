@@ -4,7 +4,6 @@ import { CartContext } from "../CartContext";
 const CartPage = () => {
   const cart = useContext(CartContext);
 
-    // Calculate total price
     const totalPrice = cart.items.reduce((acc, item) => {
       return acc + item.cost * item.quantity;
     }, 0);
