@@ -58,7 +58,7 @@ const Navbar = () => {
           </ul>
         {/* <button className="cart" onClick={handleCartClick} >cart</button> */}
         <button className="cart" onClick={handleCartClick}>
-            Cart ({cart.items.length}) {/* Display total items in cart */}
+            Cart ({cart.items.length})
           </button>
         </div>
       </div>

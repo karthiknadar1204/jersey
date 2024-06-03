@@ -21,7 +21,7 @@ const IncrementDecrement = ({ productId }) => {
       removeOneFromCart(productId);
       setCount(count - 1);
     } else {
-      removeOneFromCart(productId); // This will remove the item from the cart if quantity is 1
+      removeOneFromCart(productId);
     }
   };
 

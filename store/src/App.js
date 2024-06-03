@@ -13,9 +13,9 @@ const App = () => {
   return (
     <CartProvider>
     <Router>
-      <div className="flex flex-col min-h-screen"> {/* Ensure the flex container takes at least the full height of the viewport */}
+      <div className="flex flex-col min-h-screen">
         <Navbar />
-        <main className="flex-grow"> {/* This allows the content area to grow and push the footer down */}
+        <main className="flex-grow">
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/all' element={<AllProducts />} />
