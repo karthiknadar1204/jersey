@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { CartContext } from "../CartContext";
+import IncrementDecrement from "./IncrementDecrement";
 
 const CartPage = () => {
   const cart = useContext(CartContext);
@@ -8,9 +9,25 @@ const CartPage = () => {
     return acc + item.cost * item.quantity;
   }, 0);
 
-  const handleCheckout = () => {
-    // Handle checkout logic here
-    alert('Proceeding to checkout');
+  const checkout = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/checkout', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ items: cart.items })
+      });
+
+      const data = await response.json();
+      if (data.url) {
+        window.location.assign(data.url);
+      } else {
+        console.error("Checkout URL not found");
+      }
+    } catch (error) {
+      console.error("Error during checkout:", error);
+    }
   };
 
   return (
@@ -24,8 +41,7 @@ const CartPage = () => {
               <h2>{item.name}</h2>
               <p>Cost: ${item.cost}</p>
               <p>Quantity: {item.quantity}</p>
-              <button onClick={() => cart.addOneToCart(item.id)}>+</button>
-              <button onClick={() => cart.removeOneFromCart(item.id)}>-</button>
+              <IncrementDecrement productId={item.id} />
               <button onClick={() => cart.deleteFromCart(item.id)}>Delete</button>
             </div>
           </div>
@@ -34,7 +50,7 @@ const CartPage = () => {
       <div className="total-price">
         <h2>Total Price: ${totalPrice}</h2>
       </div>
-      <button className="pay-now-button" onClick={handleCheckout}>
+      <button className="pay-now-button" onClick={checkout}>
         Pay Now
       </button>
     </div>

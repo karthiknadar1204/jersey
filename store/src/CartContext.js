@@ -19,6 +19,7 @@ export function CartProvider({ children }) {
   }
 
   function addOneToCart(id) {
+    console.log("Adding one to cart with ID:", id); 
     const existingProduct = cartProducts.find((product) => product.id === id);
     if (!existingProduct) {
       const productData = getProductData(id);
@@ -35,6 +36,7 @@ export function CartProvider({ children }) {
   }
 
   function removeOneFromCart(id) {
+    console.log("Removing one from cart with ID:", id);  
     setCartProducts((prevCartProducts) => {
       const existingProduct = prevCartProducts.find((product) => product.id === id);
       if (existingProduct?.quantity === 1) {
@@ -48,6 +50,7 @@ export function CartProvider({ children }) {
   }
 
   function deleteFromCart(id) {
+    console.log("Deleting from cart with ID:", id);
     setCartProducts((prevCartProducts) =>
       prevCartProducts.filter((product) => product.id !== id)
     );

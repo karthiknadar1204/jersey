@@ -36,7 +36,7 @@ const ProductInfo = () => {
           <br /> numquam eius modi tempora incidunt lores ta porro ame.
         </div>
         <div className="actions">
-          <IncrementDecrement productId={parseInt(id)} />
+          <IncrementDecrement productId={id} />
           <button className="custom-button-3" onClick={addToCart}>Add to Cart</button>
         </div>
         <div className="additional_info">

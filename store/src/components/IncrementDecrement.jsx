@@ -10,14 +10,18 @@ const IncrementDecrement = ({ productId }) => {
   }, [getProductQuantity, productId]);
 
   const increment = () => {
+    console.log("Incrementing product with ID:", productId); 
     addOneToCart(productId);
     setCount(count + 1);
   };
 
   const decrement = () => {
     if (count > 1) {
+      console.log("Decrementing product with ID:", productId);
       removeOneFromCart(productId);
       setCount(count - 1);
+    } else {
+      removeOneFromCart(productId); // This will remove the item from the cart if quantity is 1
     }
   };
 
