@@ -35,11 +35,16 @@ export function CartProvider({ children }) {
   }
 
   function removeOneFromCart(id) {
-    setCartProducts((prevCartProducts) =>
-      prevCartProducts.map((product) =>
-        product.id === id ? { ...product, quantity: product.quantity - 1 } : product
-      )
-    );
+    setCartProducts((prevCartProducts) => {
+      const existingProduct = prevCartProducts.find((product) => product.id === id);
+      if (existingProduct?.quantity === 1) {
+        return prevCartProducts.filter((product) => product.id !== id);
+      } else {
+        return prevCartProducts.map((product) =>
+          product.id === id ? { ...product, quantity: product.quantity - 1 } : product
+        );
+      }
+    });
   }
 
   function deleteFromCart(id) {

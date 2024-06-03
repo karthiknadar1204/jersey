@@ -4,9 +4,14 @@ import { CartContext } from "../CartContext";
 const CartPage = () => {
   const cart = useContext(CartContext);
 
-    const totalPrice = cart.items.reduce((acc, item) => {
-      return acc + item.cost * item.quantity;
-    }, 0);
+  const totalPrice = cart.items.reduce((acc, item) => {
+    return acc + item.cost * item.quantity;
+  }, 0);
+
+  const handleCheckout = () => {
+    // Handle checkout logic here
+    alert('Proceeding to checkout');
+  };
 
   return (
     <div className="cart-container">
@@ -19,6 +24,9 @@ const CartPage = () => {
               <h2>{item.name}</h2>
               <p>Cost: ${item.cost}</p>
               <p>Quantity: {item.quantity}</p>
+              <button onClick={() => cart.addOneToCart(item.id)}>+</button>
+              <button onClick={() => cart.removeOneFromCart(item.id)}>-</button>
+              <button onClick={() => cart.deleteFromCart(item.id)}>Delete</button>
             </div>
           </div>
         ))}
@@ -26,6 +34,9 @@ const CartPage = () => {
       <div className="total-price">
         <h2>Total Price: ${totalPrice}</h2>
       </div>
+      <button className="pay-now-button" onClick={handleCheckout}>
+        Pay Now
+      </button>
     </div>
   );
 };
