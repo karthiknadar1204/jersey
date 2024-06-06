@@ -56,7 +56,6 @@ const Navbar = () => {
               <li>Contact</li>
             </NavLink>
           </ul>
-        {/* <button className="cart" onClick={handleCartClick} >cart</button> */}
         <button className="cart" onClick={handleCartClick}>
             Cart ({cart.items.length})
           </button>
