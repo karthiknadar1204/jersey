@@ -1,59 +1,195 @@
-// sk_test_51PNQgESDgo37ugH7Mj3tN2c3kgMPVmEjQF2TZPYoy15TAVzdPzpLn96NzudCxsxNWiFyfQVDvvzFvt99lidMYzAk00rDOd0rQy
-//coffee:price_1PNQiGSDgo37ugH7wGC4l70F
-//sun-glasses:price_1PNQjkSDgo37ugH7SfpWFDdy
-//camera:price_1PNQkfSDgo37ugH7IZPvK7Hq
+// const express = require('express');
+// const mongoose = require('mongoose');
+// const dotenv = require('dotenv');
+// const cors = require('cors');
+// const User = require('./models/user.model.js');
+// const Order = require('./models/order.model.js');
+// const stripe = require('stripe')('sk_test_51PNQgESDgo37ugH7Mj3tN2c3kgMPVmEjQF2TZPYoy15TAVzdPzpLn96NzudCxsxNWiFyfQVDvvzFvt99lidMYzAk00rDOd0rQy');
+
+// const app = express();
+// app.use(cors());
+// app.use(express.static("public"));
+// app.use(express.json());
+
+// dotenv.config();
+
+// mongoose.connect(process.env.MONGO, { useNewUrlParser: true, useUnifiedTopology: true })
+//     .then(() => console.log('MongoDB is connected!!!'))
+//     .catch(err => console.log('MongoDB connection error:', err));
+
+// app.post('/checkout', async (req, res) => {
+//     const { user, items } = req.body;
+
+//     // Calculate total cost
+//     const totalCost = items.reduce((acc, item) => acc + item.cost * item.quantity, 0);
+
+//     try {
+//         console.log('Received user data:', user);
+//         console.log('Received items:', items);
+
+//         // Save user to the database
+//         let existingUser = await User.findOne({ email: user.email });
+//         if (!existingUser) {
+//             existingUser = new User(user);
+//             await existingUser.save();
+//             console.log('User saved to the database:', existingUser);
+//         } else {
+//             console.log('User already exists in the database:', existingUser);
+//         }
+
+//         // Save order to the database
+//         const newOrder = new Order({ user, items, totalCost });
+//         await newOrder.save();
+//         console.log('Order saved to the database:', newOrder);
+
+//         // Create Stripe checkout session
+//         let lineItems = items.map((item) => ({
+//             price_data: {
+//                 currency: 'usd',
+//                 product_data: {
+//                     name: item.name,
+//                 },
+//                 unit_amount: item.cost * 100, // Stripe expects the amount in cents
+//             },
+//             quantity: item.quantity,
+//         }));
+
+//         const session = await stripe.checkout.sessions.create({
+//             payment_method_types: ['card'],
+//             line_items: lineItems,
+//             mode: 'payment',
+//             success_url: "http://localhost:3000/success",
+//             cancel_url: "http://localhost:3000/cancel"
+//         });
+
+//         res.json({ url: session.url });
+//     } catch (error) {
+//         console.error('Error during checkout:', error);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// });
+
+// app.listen(4000, () => console.log("Listening on port 4000!"));
+
+
+
+
+
+
+
+
+
 
 const express = require('express');
-var cors = require('cors');
-
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const cors = require('cors');
+const User = require('./models/user.model.js');
+const Order = require('./models/order.model.js');
 const stripe = require('stripe')('sk_test_51PNQgESDgo37ugH7Mj3tN2c3kgMPVmEjQF2TZPYoy15TAVzdPzpLn96NzudCxsxNWiFyfQVDvvzFvt99lidMYzAk00rDOd0rQy');
+const nodemailer = require('nodemailer');
 
 const app = express();
 app.use(cors());
 app.use(express.static("public"));
 app.use(express.json());
 
+dotenv.config();
 
-app.post('/checkout',async(req,res)=>{
-        /*
-    req.body.items
-    [
-        {
-            id: 1,
-            quantity: 3
-        }
-    ]
+mongoose.connect(process.env.MONGO, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('MongoDB is connected!!!'))
+    .catch(err => console.log('MongoDB connection error:', err));
 
-    stripe wants
-    [
-        {
-            price: 1,
-            quantity: 3
+// Nodemailer transporter setup
+const transporter = nodemailer.createTransport({
+    host: 'smtp.ethereal.email',
+    port: 587,
+    auth: {
+        user: 'kendall.mertz@ethereal.email',
+        pass: 'Nk7FemF6rx5Yufh1yZ'
+    }
+});
+
+app.post('/checkout', async (req, res) => {
+    const { user, items } = req.body;
+
+    // Calculate total cost
+    const totalCost = items.reduce((acc, item) => acc + item.cost * item.quantity, 0);
+
+    try {
+        console.log('Received user data:', user);
+        console.log('Received items:', items);
+
+        // Save user to the database
+        let existingUser = await User.findOne({ email: user.email });
+        if (!existingUser) {
+            existingUser = new User(user);
+            await existingUser.save();
+            console.log('User saved to the database:', existingUser);
+        } else {
+            console.log('User already exists in the database:', existingUser);
         }
-    ]
-    */
-    console.log(req.body);
-    const items = req.body.items;
-    let lineItems = [];
-    items.forEach((item)=> {
-        lineItems.push(
-            {
-                price: item.id,
-                quantity: item.quantity
+
+        // Save order to the database
+        const newOrder = new Order({ user, items, totalCost });
+        await newOrder.save();
+        console.log('Order saved to the database:', newOrder);
+
+        // Send email notification to admin
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: 'karthiknadar1204@gmail.com', // Admin email
+            subject: 'New Order Placed',
+            html: `
+                <p>A new order has been placed by ${user.name}.</p>
+                <p>Order details:</p>
+                <ul>
+                    ${items.map(item => `
+                        <li>
+                            <strong>Product Name:</strong> ${item.name}<br>
+                            <strong>Cost:</strong> $${item.cost}<br>
+                            <strong>Quantity:</strong> ${item.quantity}<br>
+                        </li>
+                    `).join('')}
+                </ul>
+                <p>Total Cost: ${totalCost}</p>
+            `
+        };
+        
+
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.error('Error sending email:', error);
+            } else {
+                console.log('Email sent:', info.response);
             }
-        )
-    });
-    const session = await stripe.checkout.sessions.create({
-        line_items: lineItems,
-        mode: 'payment',
-        success_url: "http://localhost:3000/success",
-        cancel_url: "http://localhost:3000/cancel"
-    });
-    res.send(JSON.stringify({
-        url: session.url
-    }));
+        });
+
+        // Create Stripe checkout session
+        let lineItems = items.map((item) => ({
+            price_data: {
+                currency: 'usd',
+                product_data: {
+                    name: item.name,
+                },
+                unit_amount: item.cost * 100, // Stripe expects the amount in cents
+            },
+            quantity: item.quantity,
+        }));
+
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            line_items: lineItems,
+            mode: 'payment',
+            success_url: "http://localhost:3000/success",
+            cancel_url: "http://localhost:3000/cancel"
+        });
+
+        res.json({ url: session.url });
+    } catch (error) {
+        console.error('Error during checkout:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
 
 app.listen(4000, () => console.log("Listening on port 4000!"));
-
-
